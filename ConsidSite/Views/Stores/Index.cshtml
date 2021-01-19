@@ -1,0 +1,47 @@
+﻿@model ConsidSite.Models.ViewModels.StoreIndexViewModel
+@{
+    ViewData["Title"] = "Stores manager";
+}
+
+<h3>Stores index</h3>
+
+<p>
+    <a asp-action="Create">Create new store</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                <h3>Name</h3>
+            </th>
+            <th>
+                <h3>Address</h3>
+            </th>
+            <th>
+                <h3>Company</h3>
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.StoreList)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Address)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Company)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
