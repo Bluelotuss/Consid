@@ -59,5 +59,17 @@ namespace ConsidSite.Models.ViewModels
             Longitude = longitude;
             Latitude = latitude;
         }
+
+        public CreateStoreViewModel(Stores store)
+        {
+            CompanyId = store.CompanyId;
+            Name = store.Name;
+            Address = store.Address;
+            City = store.City;
+            Zip = store.Zip;
+            Country = store.Country;
+            Longitude = store.Longitude;
+            Latitude = store.Latitude;
+        }
     }
 }

@@ -3,15 +3,17 @@ using System;
 using ConsidSite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace ConsidSite.Migrations
 {
     [DbContext(typeof(ConsidDBContext))]
-    partial class ConsidDBContextModelSnapshot : ModelSnapshot
+    [Migration("20210119153005_UpdatedDBWithUuid")]
+    partial class UpdatedDBWithUuid
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

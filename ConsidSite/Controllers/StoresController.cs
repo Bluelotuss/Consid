@@ -57,5 +57,80 @@ namespace ConsidSite.Controllers
 
             return View(createStoreViewModel);
         }
+
+        public IActionResult Edit(Guid id)
+        {
+            Stores store = _storesService.FindBy(id);
+
+            CreateStoreViewModel ccvm = new CreateStoreViewModel(store);
+
+            ccvm.CompanyList = _companiesService.All();
+
+            if (store == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(ccvm);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(Guid id, CreateStoreViewModel createStoreViewModel)
+        {
+            Companies company = _companiesService.FindBy(createStoreViewModel.Company.Id);
+
+            createStoreViewModel.CompanyId = company.Id;
+
+            if (ModelState.IsValid)
+            {
+                if (_storesService.Edit(id, createStoreViewModel) != null)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                ModelState.AddModelError("System", "Failed to edit");
+            }
+
+            return View(createStoreViewModel);
+        }
+
+        public IActionResult Delete(Guid id)
+        {
+            Stores store = _storesService.FindBy(id);
+
+            if (store == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(store);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Delete(Guid id, int deleteId)
+        {
+            if (_storesService.Remove(id))
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            ModelState.AddModelError("System", "Failed to delete");
+
+            Stores store = _storesService.FindBy(id);
+
+            return View(store);
+        }
+
+        public ActionResult Details(Guid id)
+        {
+            Stores store = _storesService.FindBy(id);
+
+            if (store == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(store);
+        }
     }
 }

@@ -89,7 +89,7 @@ namespace ConsidSite.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Delete(Guid id, int deleteId)
+        public IActionResult Delete(Guid id, int deleteId)  // Why deleteId?
         {
 
             if (_companiesService.Remove(id))
@@ -99,6 +99,18 @@ namespace ConsidSite.Controllers
                 ModelState.AddModelError("System", "Failed to delete");
 
             Companies company = _companiesService.FindBy(id);
+
+            return View(company);
+        }
+
+        public ActionResult Details(Guid id)
+        {
+            Companies company = _companiesService.FindBy(id);
+
+            if (company == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
 
             return View(company);
         }

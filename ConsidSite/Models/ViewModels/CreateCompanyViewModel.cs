@@ -12,8 +12,8 @@ namespace ConsidSite.Models.ViewModels
 
         [Required(ErrorMessage = "Organization number is required")]
         [Display(Name = "Organization number")]
-        [Range(1, int.MaxValue)]        //Värdet kan ju överstiga 2147483647, hur gör man om man är född 99 och har enskild firma?
-        public int OrganizationNumber { get; set; }
+        [Range(1000000000, 999999999999999, ErrorMessage = "Organization number cannot be less than 10 or more than 15 numbers")]
+        public long OrganizationNumber { get; set; }
 
         [Display(Name = "Notes")]
         public string Notes { get; set; }

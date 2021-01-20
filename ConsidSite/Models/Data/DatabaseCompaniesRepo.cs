@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace ConsidSite.Models.Data
 {
@@ -13,7 +14,7 @@ namespace ConsidSite.Models.Data
             _companiesDbContext = companiesDbContext;
         }
 
-        public Companies Create(string name, int organizationNumber, string notes)
+        public Companies Create(string name, long organizationNumber, string notes)
         {
             Companies company = new Companies(name, organizationNumber, notes);
 
@@ -29,12 +30,12 @@ namespace ConsidSite.Models.Data
 
         public List<Companies> Read()
         {
-            return _companiesDbContext.Companies.ToList();
+            return _companiesDbContext.Companies.Include(s => s.Stores).ToList();
         }
 
         public Companies Read(Guid id)
         {
-            Companies company = _companiesDbContext.Companies.Find(id);
+            Companies company = _companiesDbContext.Companies.Include(s => s.Stores).SingleOrDefault(s => s.Id == id);
 
             if (company != null)
             {

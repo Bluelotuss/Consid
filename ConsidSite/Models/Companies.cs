@@ -16,12 +16,12 @@ namespace ConsidSite
 
         public Guid Id { get; set; }
         public string Name { get; set; }
-        public int OrganizationNumber { get; set; }
+        public long OrganizationNumber { get; set; }
         public string Notes { get; set; }
 
         public virtual ICollection<Stores> Stores { get; set; }
 
-        public Companies(string name, int organizationNumber, string notes)
+        public Companies(string name, long organizationNumber, string notes)
         {
             Name = name;
             OrganizationNumber = organizationNumber;

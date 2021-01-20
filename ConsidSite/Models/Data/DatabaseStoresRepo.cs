@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace ConsidSite.Models.Data
 {
@@ -29,12 +30,12 @@ namespace ConsidSite.Models.Data
 
         public List<Stores> Read()
         {
-            return _storesDbContext.Stores.ToList();
+            return _storesDbContext.Stores.Include(c => c.Company).ToList();
         }
 
         public Stores Read(Guid id)
         {
-            Stores store = _storesDbContext.Stores.Find(id);
+            Stores store = _storesDbContext.Stores.Include(c => c.Company).SingleOrDefault(s => s.Id == id);
 
             if (store != null)
             {

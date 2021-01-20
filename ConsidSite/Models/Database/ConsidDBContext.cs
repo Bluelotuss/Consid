@@ -50,7 +50,7 @@ namespace ConsidSite
 
             modelBuilder.Entity<Stores>(entity =>
             {
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.Property(e => e.Id).HasDefaultValueSql("uuid_generate_v4()");
 
                 entity.Property(e => e.Address)
                     .IsRequired()
@@ -80,7 +80,8 @@ namespace ConsidSite
                     .WithMany(p => p.Stores)
                     .HasForeignKey(d => d.CompanyId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("CompanyId");
+                    .HasConstraintName("CompanyId")
+                    .OnDelete(DeleteBehavior.Cascade);
             });
 
             OnModelCreatingPartial(modelBuilder);
