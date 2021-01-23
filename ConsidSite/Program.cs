@@ -20,7 +20,12 @@ namespace ConsidSite
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseStartup<Startup>();
+                    webBuilder
+                    .ConfigureAppConfiguration((hostingContext, config) =>
+                    {
+                        config.AddJsonFile("secrets.json", optional: false, reloadOnChange: false);
+                    })
+                    .UseStartup<Startup>();
                 });
     }
 }

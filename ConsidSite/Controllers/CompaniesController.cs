@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ConsidSite.Models;
 using ConsidSite.Models.Services;
 using ConsidSite.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 namespace ConsidSite.Controllers
 {

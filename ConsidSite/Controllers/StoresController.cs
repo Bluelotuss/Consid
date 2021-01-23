@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ConsidSite.Models;
 using ConsidSite.Models.Services;
 using ConsidSite.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-
-// For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+using Microsoft.Extensions.Options;
 
 namespace ConsidSite.Controllers
 {
@@ -14,12 +14,20 @@ namespace ConsidSite.Controllers
     {
         private readonly IStoresService _storesService;
         private readonly ICompaniesService _companiesService;
+        private readonly AppSecrets _appConfig;
 
-        public StoresController(IStoresService storesService, ICompaniesService companiesService)
+        public StoresController(IStoresService storesService, ICompaniesService companiesService, IOptions<AppSecrets> optionsAccessor)
         {
             _storesService = storesService;
             _companiesService = companiesService;
+
+            if (optionsAccessor == null)
+            {
+                throw new ArgumentNullException(nameof(optionsAccessor));
+            }
+            _appConfig = optionsAccessor.Value;
         }
+
         // GET: /<controller>/
         public IActionResult Index()
         {
@@ -34,6 +42,8 @@ namespace ConsidSite.Controllers
             CreateStoreViewModel ccvm = new CreateStoreViewModel();
 
             ccvm.CompanyList = _companiesService.All();
+
+            ViewBag.API_Key = _appConfig.GoogleAPIkey;
 
             return View(ccvm);
         }
@@ -129,6 +139,8 @@ namespace ConsidSite.Controllers
             {
                 return RedirectToAction(nameof(Index));
             }
+
+            ViewBag.API_Key = _appConfig.GoogleAPIkey;
 
             return View(store);
         }

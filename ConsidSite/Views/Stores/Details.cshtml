@@ -62,3 +62,36 @@
         </dd>
     </dl>
 </div>
+
+<div>
+    <div id="googleMap" style="width:100%;height:400px;"></div>
+</div>
+
+<script>
+    var latVal = parseFloat("@Model.Latitude");
+    var lngVal = parseFloat("@Model.Longitude");
+
+    var google_map = document.getElementById("googleMap");
+
+    if (latVal == null || lngVal == null) {
+        google_map.style.visibility = "hidden";
+    } else {
+        google_map.style.visibility = "visible";
+    }
+
+    function myMap() {
+        var myLatlng = new google.maps.LatLng(latVal, lngVal);
+        var mapProp = {
+            center: myLatlng,
+            zoom: 5,
+        };
+        var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
+
+        var marker = new google.maps.Marker({
+            position: myLatlng
+        });
+        marker.setMap(map);
+    }
+</script>
+
+<script async defer src="@("https://maps.googleapis.com/maps/api/js?key=" + ViewBag.API_Key + "&callback=myMap")"></script>

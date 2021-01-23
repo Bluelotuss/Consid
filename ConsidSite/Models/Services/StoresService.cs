@@ -37,7 +37,16 @@ namespace ConsidSite.Models.Services
 
         public Stores Edit(Guid id, CreateStoreViewModel store)
         {
-            Stores editedStore = new Stores() { Id = id, CompanyId = store.CompanyId, Name = store.Name, Address = store.Address, City = store.City, Zip = store.Zip, Country = store.Country, Longitude = store.Longitude, Latitude = store.Latitude };
+            Stores editedStore = FindBy(id);
+
+            editedStore.CompanyId = store.CompanyId;
+            editedStore.Name = store.Name;
+            editedStore.Address = store.Address;
+            editedStore.City = store.City;
+            editedStore.Zip = store.Zip;
+            editedStore.Country = store.Country;
+            editedStore.Longitude = store.Longitude;
+            editedStore.Latitude = store.Latitude;
 
             _storesRepo.Update(editedStore);
 
