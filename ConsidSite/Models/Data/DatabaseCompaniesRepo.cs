@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
 namespace ConsidSite.Models.Data
@@ -14,13 +15,13 @@ namespace ConsidSite.Models.Data
             _companiesDbContext = companiesDbContext;
         }
 
-        public Companies Create(string name, long organizationNumber, string notes)
+        public async Task<Companies> Create(string name, long organizationNumber, string notes)
         {
             Companies company = new Companies(name, organizationNumber, notes);
 
             _companiesDbContext.Companies.Add(company);
 
-            if (_companiesDbContext.SaveChanges() > 0)
+            if (await _companiesDbContext.SaveChangesAsync() > 0)
             {
                 return company;
             }
@@ -28,14 +29,14 @@ namespace ConsidSite.Models.Data
             return null;
         }
 
-        public List<Companies> Read()
+        public async Task<List<Companies>> Read()
         {
-            return _companiesDbContext.Companies.Include(s => s.Stores).ToList();
+            return await _companiesDbContext.Companies.Include(s => s.Stores).ToListAsync();
         }
 
-        public Companies Read(Guid id)
+        public async Task<Companies> Read(Guid id)
         {
-            Companies company = _companiesDbContext.Companies.Include(s => s.Stores).SingleOrDefault(s => s.Id == id);
+            Companies company = await _companiesDbContext.Companies.Include(s => s.Stores).SingleOrDefaultAsync(s => s.Id == id);
 
             if (company != null)
             {
@@ -45,11 +46,11 @@ namespace ConsidSite.Models.Data
             return null;
         }
 
-        public Companies Update(Companies company)
+        public async Task<Companies> Update(Companies company)
         {
             _companiesDbContext.Companies.Update(company);
 
-            if (_companiesDbContext.SaveChanges() > 0)
+            if (await _companiesDbContext.SaveChangesAsync() > 0)
             {
                 return company;
             }
@@ -57,11 +58,11 @@ namespace ConsidSite.Models.Data
             return null;
         }
 
-        public bool Delete(Companies company)
+        public async Task<bool> Delete(Companies company)
         {
             _companiesDbContext.Companies.Remove(company);
 
-            if (_companiesDbContext.SaveChanges() > 0)
+            if (await _companiesDbContext.SaveChangesAsync() > 0)
             {
                 return true;
             }

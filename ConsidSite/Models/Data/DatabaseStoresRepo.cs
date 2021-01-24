@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
 namespace ConsidSite.Models.Data
@@ -14,13 +15,13 @@ namespace ConsidSite.Models.Data
             _storesDbContext = storesDbContext;
         }
 
-        public Stores Create(Guid companyId, string name, string address, string city, string zip, string country, string longitude, string latitude)
+        public async Task<Stores> Create(Guid companyId, string name, string address, string city, string zip, string country, string longitude, string latitude)
         {
             Stores store = new Stores(companyId, name, address, city, zip, country, longitude, latitude);
 
             _storesDbContext.Stores.Add(store);
 
-            if (_storesDbContext.SaveChanges() > 0)
+            if (await _storesDbContext.SaveChangesAsync() > 0)
             {
                 return store;
             }
@@ -28,14 +29,14 @@ namespace ConsidSite.Models.Data
             return null;
         }
 
-        public List<Stores> Read()
+        public async Task<List<Stores>> Read()
         {
-            return _storesDbContext.Stores.Include(c => c.Company).ToList();
+            return await _storesDbContext.Stores.Include(c => c.Company).ToListAsync();
         }
 
-        public Stores Read(Guid id)
+        public async Task<Stores> Read(Guid id)
         {
-            Stores store = _storesDbContext.Stores.Include(c => c.Company).SingleOrDefault(s => s.Id == id);
+            Stores store = await _storesDbContext.Stores.Include(c => c.Company).SingleOrDefaultAsync(s => s.Id == id);
 
             if (store != null)
             {
@@ -45,11 +46,11 @@ namespace ConsidSite.Models.Data
             return null;
         }
 
-        public Stores Update(Stores store)
+        public async Task<Stores> Update(Stores store)
         {
             _storesDbContext.Stores.Update(store);
 
-            if (_storesDbContext.SaveChanges() > 0)
+            if (await _storesDbContext.SaveChangesAsync() > 0)
             {
                 return store;
             }
@@ -57,11 +58,11 @@ namespace ConsidSite.Models.Data
             return null;
         }
 
-        public bool Delete(Stores store)
+        public async Task<bool> Delete(Stores store)
         {
             _storesDbContext.Stores.Remove(store);
 
-            if (_storesDbContext.SaveChanges() > 0)
+            if (await _storesDbContext.SaveChangesAsync() > 0)
             {
                 return true;
             }

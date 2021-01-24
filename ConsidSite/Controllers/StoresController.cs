@@ -29,19 +29,19 @@ namespace ConsidSite.Controllers
         }
 
         // GET: /<controller>/
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             StoreIndexViewModel stores = new StoreIndexViewModel();
-            stores.StoreList = _storesService.All();
+            stores.StoreList = await _storesService.All();
 
             return View(stores);
         }
 
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
             CreateStoreViewModel ccvm = new CreateStoreViewModel();
 
-            ccvm.CompanyList = _companiesService.All();
+            ccvm.CompanyList = await _companiesService.All();
 
             ViewBag.API_Key = _appConfig.GoogleAPIkey;
 
@@ -50,31 +50,31 @@ namespace ConsidSite.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(CreateStoreViewModel createStoreViewModel)
+        public async Task<IActionResult> Create(CreateStoreViewModel createStoreViewModel)
         {
-            Companies company = _companiesService.FindBy(createStoreViewModel.Company.Id);
+            Companies company = await _companiesService.FindBy(createStoreViewModel.Company.Id);
 
             createStoreViewModel.CompanyId = company.Id;
 
             if (ModelState.IsValid)
             {
-                _storesService.Add(createStoreViewModel);
+                await _storesService.Add(createStoreViewModel);
 
                 return RedirectToAction(nameof(Index));
             }
 
-            createStoreViewModel.CompanyList = _companiesService.All();
+            createStoreViewModel.CompanyList = await _companiesService.All();
 
             return View(createStoreViewModel);
         }
 
-        public IActionResult Edit(Guid id)
+        public async Task<IActionResult> Edit(Guid id)
         {
-            Stores store = _storesService.FindBy(id);
+            Stores store = await _storesService.FindBy(id);
 
             CreateStoreViewModel ccvm = new CreateStoreViewModel(store);
 
-            ccvm.CompanyList = _companiesService.All();
+            ccvm.CompanyList = await _companiesService.All();
 
             if (store == null)
             {
@@ -86,15 +86,15 @@ namespace ConsidSite.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(Guid id, CreateStoreViewModel createStoreViewModel)
+        public async Task<IActionResult> Edit(Guid id, CreateStoreViewModel createStoreViewModel)
         {
-            Companies company = _companiesService.FindBy(createStoreViewModel.Company.Id);
+            Companies company = await _companiesService.FindBy(createStoreViewModel.Company.Id);
 
             createStoreViewModel.CompanyId = company.Id;
 
             if (ModelState.IsValid)
             {
-                if (_storesService.Edit(id, createStoreViewModel) != null)
+                if (await _storesService.Edit(id, createStoreViewModel) != null)
                 {
                     return RedirectToAction(nameof(Index));
                 }
@@ -104,9 +104,9 @@ namespace ConsidSite.Controllers
             return View(createStoreViewModel);
         }
 
-        public IActionResult Delete(Guid id)
+        public async Task<IActionResult> Delete(Guid id)
         {
-            Stores store = _storesService.FindBy(id);
+            Stores store = await _storesService.FindBy(id);
 
             if (store == null)
             {
@@ -118,22 +118,22 @@ namespace ConsidSite.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Delete(Guid id, int deleteId)
+        public async Task<IActionResult> Delete(Guid id, int deleteId)
         {
-            if (_storesService.Remove(id))
+            if (await _storesService.Remove(id))
             {
                 return RedirectToAction(nameof(Index));
             }
             ModelState.AddModelError("System", "Failed to delete");
 
-            Stores store = _storesService.FindBy(id);
+            Stores store = await _storesService.FindBy(id);
 
             return View(store);
         }
 
-        public ActionResult Details(Guid id)
+        public async Task<ActionResult> Details(Guid id)
         {
-            Stores store = _storesService.FindBy(id);
+            Stores store = await _storesService.FindBy(id);
 
             if (store == null)
             {

@@ -20,10 +20,10 @@ namespace ConsidSite.Controllers
         }
 
         // GET: CompaniesController
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             CompanyIndexViewModel companies = new CompanyIndexViewModel();
-            companies.CompanyList = _companiesService.All();
+            companies.CompanyList = await _companiesService.All();
 
             return View(companies);
         }
@@ -37,11 +37,11 @@ namespace ConsidSite.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(CreateCompanyViewModel createCompanyViewModel)
+        public async Task<IActionResult> Create(CreateCompanyViewModel createCompanyViewModel)
         {
             if (ModelState.IsValid)
             {
-                _companiesService.Add(createCompanyViewModel);
+                await _companiesService.Add(createCompanyViewModel);
 
                 return RedirectToAction(nameof(Index));
             }
@@ -49,9 +49,9 @@ namespace ConsidSite.Controllers
             return View(createCompanyViewModel);
         }
 
-        public IActionResult Edit(Guid id)
+        public async Task<IActionResult> Edit(Guid id)
         {
-            Companies company = _companiesService.FindBy(id);
+            Companies company = await _companiesService.FindBy(id);
 
             if (company == null)
             {
@@ -63,11 +63,11 @@ namespace ConsidSite.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(Guid id, CreateCompanyViewModel createCompanyViewModel)
+        public async Task<IActionResult> Edit(Guid id, CreateCompanyViewModel createCompanyViewModel)
         {
             if (ModelState.IsValid)
             {
-                if (_companiesService.Edit(id, createCompanyViewModel) != null)
+                if (await _companiesService.Edit(id, createCompanyViewModel) != null)
                 {
                     return RedirectToAction(nameof(Index));
                 }
@@ -77,9 +77,9 @@ namespace ConsidSite.Controllers
             return View(createCompanyViewModel);
         }
 
-        public IActionResult Delete(Guid id)
+        public async Task<IActionResult> Delete(Guid id)
         {
-            Companies company = _companiesService.FindBy(id);
+            Companies company = await _companiesService.FindBy(id);
 
             if (company == null)
             {
@@ -91,23 +91,23 @@ namespace ConsidSite.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Delete(Guid id, int deleteId)  // Why deleteId?
+        public async Task<IActionResult> Delete(Guid id, int deleteId)  // Why deleteId?
         {
 
-            if (_companiesService.Remove(id))
+            if (await _companiesService.Remove(id))
             {
                 return RedirectToAction(nameof(Index));
             }
                 ModelState.AddModelError("System", "Failed to delete");
 
-            Companies company = _companiesService.FindBy(id);
+            Companies company = await _companiesService.FindBy(id);
 
             return View(company);
         }
 
-        public ActionResult Details(Guid id)
+        public async Task<ActionResult> Details(Guid id)
         {
-            Companies company = _companiesService.FindBy(id);
+            Companies company = await _companiesService.FindBy(id);
 
             if (company == null)
             {
