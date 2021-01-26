@@ -91,14 +91,16 @@ namespace ConsidSite.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(Guid id, int deleteId)  // Why deleteId?
+        public async Task<IActionResult> Delete(Guid id, Guid deleteId)
         {
-
-            if (await _companiesService.Remove(id))
+            if (id == deleteId)
             {
-                return RedirectToAction(nameof(Index));
+                if (await _companiesService.Remove(id))
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                    ModelState.AddModelError("System", "Failed to delete");
             }
-                ModelState.AddModelError("System", "Failed to delete");
 
             Companies company = await _companiesService.FindBy(id);
 

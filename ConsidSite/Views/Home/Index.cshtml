@@ -7,3 +7,56 @@
     <a asp-controller="Companies" asp-action="Index">Manage companies</a> |
     <a asp-controller="Stores" asp-action="Index">Manage stores</a>
 </div>
+
+<div>
+    <h3>Sitedetaljer</h3>
+</div>
+
+<div>
+    <p>
+        Utvecklat i Mac (OS High Sierra 10.13.6) med Visual Studio Community 2019 for Mac
+    </p>
+</div>
+
+<div>
+    <h4>Databasserver</h4>
+    <p>
+        PostgreSQL 13<br />
+        För att använda sig av auto-genererade Guid i Postgre behöver tillägget uuid-ossp installeras.<br />
+        CREATE EXTENSION IF NOT EXISTS "uuid-ossp";<br />
+        Lägg sedan till uuid_generate_v4() som default-värde för id-kolumner som använder Guid.
+    </p>
+</div>
+
+<div>
+    <h4>Frameworks</h4>
+    <p>
+        Microsoft.AspNetCore.App (3.1.8)<br />
+        Microsoft.NETCore.App (3.1.0)<br />
+    </p>
+</div>
+
+<div>
+    <h4>NuGet</h4>
+    <p>
+        Microsoft.EntityFrameworkCore.Design (3.1.11)<br />
+        Npgsql.EntityFrameworkCore.PostgreSQL (3.1.4)<br />
+    </p>
+</div>
+
+<div>
+    <h4>AppSecrets</h4>
+    <p>
+        För att tillämpa Google-API skapa en secrets.json och lägg till följande kod:<br />
+        {<br />
+        "GoogleAPIkey": "YOUR_API_KEY_HERE"<br />
+        }<br />
+    </p>
+</div>
+
+<div>
+    <h4>Connectionstring</h4>
+    <p>
+        Glöm inte att ändra connectionstring under appsettings.json.<br />
+    </p>
+</div>

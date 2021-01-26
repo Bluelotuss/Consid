@@ -118,13 +118,16 @@ namespace ConsidSite.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(Guid id, int deleteId)
+        public async Task<IActionResult> Delete(Guid id, Guid deleteId)
         {
-            if (await _storesService.Remove(id))
+            if (id == deleteId)
             {
-                return RedirectToAction(nameof(Index));
+                if (await _storesService.Remove(id))
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                    ModelState.AddModelError("System", "Failed to delete");
             }
-            ModelState.AddModelError("System", "Failed to delete");
 
             Stores store = await _storesService.FindBy(id);
 
